@@ -1,0 +1,71 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace _02.hornettComm
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<string>massages=new List<string>();
+            List<string>broadcasting=new List<string>();
+
+            string massageRegex = "^([\\d]+) <-> ([0-9a-zA-Z]+)$";
+            string broadcastRegex = "^([\\D]+) <-> ([0-9a-zA-Z]+)$";
+
+            Regex massage=new Regex(massageRegex);
+            Regex broadcast=new Regex(broadcastRegex);
+
+            string input;
+            while ((input=Console.ReadLine())!="Hornet is Green")
+            {
+                var inputArgs = input.Split(new string[] { " <-> " },StringSplitOptions.RemoveEmptyEntries);
+                if (massage.IsMatch(input))
+                {                  
+                    massages.Add($"{string.Join("",inputArgs[0].ToCharArray().Reverse())} -> {inputArgs[1]}");
+                }
+                if (broadcast.IsMatch(input))
+                {
+                    StringBuilder sb=new StringBuilder();
+                    foreach (char c in inputArgs[1].ToCharArray())
+                    {
+                        if (Char.IsLower(c))
+                        {
+                            sb.Append(Char.ToUpper(c));
+                            continue;
+                        }
+                        if (Char.IsUpper(c))
+                        {
+                            sb.Append(Char.ToLower(c));
+                            continue;
+                        }
+                        sb.Append(c);
+                    }
+                    broadcasting.Add($"{sb.ToString()} -> {inputArgs[0]}");
+                }
+            }
+            Console.WriteLine("Broadcasts:");
+            PrintColection(broadcasting);
+            Console.WriteLine("Messages:");
+            PrintColection(massages);
+        }
+        public static void PrintColection(List<string> collection)
+        {
+            if (collection.Count != 0)
+            {
+                foreach (var current in collection)
+                {
+                    Console.WriteLine(current);
+                }
+            }
+            else
+            {
+                Console.WriteLine("None");
+            }
+        }
+    }
+}
