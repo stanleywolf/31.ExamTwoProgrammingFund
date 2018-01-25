@@ -1,0 +1,56 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _03.pokemonDontGo
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var elements = Console.ReadLine().Split(' ').Select(int.Parse).ToList();
+            int sum = 0;
+
+            while (elements.Count != 0)
+            {
+                int indexes = int.Parse(Console.ReadLine());
+                int remoovingIndex = 0;
+                int lastIndex = elements[elements.Count - 1];
+                if (indexes < 0)
+                {
+                    remoovingIndex = elements[0];
+                    elements.RemoveAt(0);
+                    elements.Insert(0,lastIndex);
+                }
+               else if (indexes > elements.Count - 1)
+                {
+                    remoovingIndex = elements[elements.Count - 1];
+                    elements.RemoveAt(elements.Count - 1);
+                    elements.Insert(elements.Count,elements[0]);
+                }
+                else
+                {
+                remoovingIndex = elements[indexes];
+                    elements.RemoveAt(indexes);
+                }
+
+                sum += remoovingIndex;
+                
+                for (int i = 0; i < elements.Count; i++)
+                {
+                    if (remoovingIndex >= elements[i])
+                    {
+                        elements[i] += remoovingIndex;
+                    }
+                    else
+                    {
+                        elements[i] -= remoovingIndex;
+                    }
+                }
+            }
+            Console.WriteLine(sum);
+        }
+    }
+}
